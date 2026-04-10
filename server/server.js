@@ -8,7 +8,11 @@ dotenv.config();
 connectDB(); // Connect to MongoDB
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  credentials: true,
+  optionsSuccessStatus: 200
+}));
 app.use(express.json());
 
 // Link the routes
