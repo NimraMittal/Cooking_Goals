@@ -5,6 +5,9 @@ import Home from './pages/Home.jsx';
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import Dashboard from './pages/Dashboard.jsx';
+import ProtectedRoute from './components/common/ProtectedRoute'; // Import guards
+import PublicRoute from './components/common/PublicRoute';
+import { AuthProvider } from './context/AuthContext.jsx';
 
 // This is a simple placeholder for pages that don't exist
 const NotFound = () => <div style={{padding: "50px", textAlign: "center"}}><h1>404 - Page Not Found</h1></div>;
@@ -12,21 +15,30 @@ const NotFound = () => <div style={{padding: "50px", textAlign: "center"}}><h1>4
 function App() {
   return (
     <BrowserRouter>
+     <AuthProvider>
       <div style={appStyle}>
         <Header />
         
         <main style={mainStyle}>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
+            <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
+            <Route 
+              path="/dashboard" 
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              } 
+            />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
 
         <Footer />
-      </div>
+       </div>
+      </AuthProvider>
     </BrowserRouter>
   );
 }
