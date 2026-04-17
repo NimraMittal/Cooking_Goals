@@ -3,16 +3,22 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import connectDB from './config/database.js';
 import userRoutes from './routes/userRoutes.js';
+import authRoutes from './routes/authRoutes.js';
 
 dotenv.config();
 connectDB(); // Connect to MongoDB
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  credentials: true,
+  optionsSuccessStatus: 200
+}));
 app.use(express.json());
 
 // Link the routes
 app.use('/api/users', userRoutes);
+app.use('/api/auth', authRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ message: 'CookingGoals Server is preheated!', database: 'Connected' });
