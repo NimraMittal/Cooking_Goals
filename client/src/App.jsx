@@ -1,10 +1,12 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Header from './components/layout/Header';
-import Footer from './components/layout/Footer';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Register from './pages/Register';
+import Header from './components/layout/Header.jsx';
+import Footer from './components/layout/Footer.jsx';
+import Home from './pages/Home.jsx';
+import Login from './pages/Login.jsx';
+import Register from './pages/Register.jsx';
 import Dashboard from './pages/Dashboard';
+import ProtectedRoute from './components/common/ProtectedRoute.jsx';
+import PublicRoute from './components/common/PublicRoute.jsx';
 
 function App() {
   return (
@@ -14,9 +16,16 @@ function App() {
         <main style={{ flex: 1 }}>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
+            <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
+            <Route 
+              path="/dashboard" 
+              element={
+                <ProtectedRoute>
+                <Dashboard />
+                </ProtectedRoute>
+                } 
+                />
             <Route path="*" element={<div style={{textAlign:'center', padding:'5rem'}}><h1>404 Page Not Found</h1></div>} />
           </Routes>
         </main>
